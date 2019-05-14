@@ -1,0 +1,16 @@
+{% load staticfiles %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/basestyle.css' %}">
+  <title> Sign Up </title>
+</head>
+
+{% block content %}
+<center><h2>Sign up</h2></center>
+<form method = "post">
+  {% csrf_token %}
+  {{form.as_p}}
+
+<button type = "submit">Sign up</button>
+</form>
+Have an account?<a href = "{% url 'login'%}">Log In!</a>
+{% endblock %}

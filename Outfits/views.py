@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate,login
 class HomePageView(TemplateView):
     template_name = 'index.html'
 
+class DashboardView(TemplateView):
+    template_name = 'dashboard.html'
+
 def signup(request):
     if request.user.is_authenticated:
         return redirect('/')
