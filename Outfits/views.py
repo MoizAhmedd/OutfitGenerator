@@ -1,6 +1,8 @@
 from django.shortcuts import render,redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,ListView
+from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User
+from .models import ClothingItem
 from django.contrib.auth import authenticate,login
 from .forms import SignUpForm
 # Create your views here.
@@ -9,6 +11,18 @@ class HomePageView(TemplateView):
 
 class DashboardView(TemplateView):
     template_name = 'dashboard.html'
+
+class NewItemView(CreateView):
+    model = ClothingItem
+    template_name = 'newitem.html'
+    fields = '__all__'
+
+class MyClothesView(ListView):
+    model = ClothingItem
+    print(ClothingItem.objects.filter().first().user)
+    template_name = 'myclothes.html'
+    context_object_name = 'clothes'
+
 
 def signup(request):
     if request.user.is_authenticated:
