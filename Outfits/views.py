@@ -5,12 +5,61 @@ from django.contrib.auth.models import User
 from .models import ClothingItem
 from django.contrib.auth import authenticate,login
 from .forms import SignUpForm
+from django.http import HttpResponse, HttpRequest
+import random
 # Create your views here.
 class HomePageView(TemplateView):
     template_name = 'index.html'
 
-class DashboardView(TemplateView):
+def DashboardView(request):
+    user = request.user
+    print(user)
+    clothes = {}
+    outfit = []
+    for item in ClothingItem.objects.filter():
+        if item.category not in clothes:
+            if item.user == user:
+                clothes[item.category] = [item]
+        else:
+            if item.user == user:
+                clothes[item.category].append(item)
+    for cat in clothes:
+        outfit.append(random.choice(clothes[cat]))
+    return render(request,'dashboard.html',{'myclothes':outfit})
+
+class DashboakrdView(ListView):
+    model = ClothingItem
+    def get_user(request):
+        user = request.GET.get('user')
+        return user
+    def get_context_data(self,**kwargs):
+        clothes = {}
+        outfit = []
+        for item in ClothingItem.objects.filter():
+            if item.category not in clothes:
+                clothes[item.category] = [item]
+            else:
+                clothes[item.category].append(item)
+        for cat in clothes:
+            outfit.append(random.choice(clothes[cat]))
+        ctx = super(DashboardView,self).get_context_data(**kwargs)
+        ctx['myclothes'] = outfit
+        return ctx
+    #for cat in clothes:
+    #   outfit.append(random.choice(clothes[cat]))
+    #print(outfit)
     template_name = 'dashboard.html'
+
+
+def generated_outfit_view():
+    clothes = {}
+    for item in ClothingItem.objects.filter():
+        if item.category not in clothes:
+            clothes[item.category] = [item]
+        else:
+            clothes[item.category].append(item)
+    return clothes
+    print(ClothingItem.objects.filter())
 
 class NewItemView(CreateView):
     model = ClothingItem
@@ -19,7 +68,7 @@ class NewItemView(CreateView):
 
 class MyClothesView(ListView):
     model = ClothingItem
-    print(ClothingItem.objects.filter().first().user)
+    #print(ClothingItem.objects.filter().first().user)
     template_name = 'myclothes.html'
     context_object_name = 'clothes'
 
