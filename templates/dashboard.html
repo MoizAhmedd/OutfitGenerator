@@ -49,7 +49,7 @@
     </div>
 
     <div class="clearfix">
-        <a class="btn btn-primary float-left" href="{% url 'myclothes' %}">View my Clothes/Outfits</a>
+        <a class="btn btn-primary float-left " href="{% url 'myclothes' %}">View my Clothes/Outfits</a>
     </div>
 
     <div class="clearfix">
@@ -60,11 +60,18 @@
       <div class = "modal-content">
         <span class = "close">&times;</span>
         
+        {% if insufficient %}
+          <center><h3>Could not generate outfit due to lack of clothes!</h3></center>
+          <div class="clearfix">
+            <center><a class="btn btn-primary" href="{% url 'newitem' %}">Click here to add Clothes</a></center>
+          </div>
+        {% else %}
         <center><h2>Your Outfit!</h2></center>
-        {% for cloth in myclothes%}
-          <h3>{{cloth.name}}</h3>
-          <img src = "{{MEDIA_URL}}{{cloth.image}}">
-        {% endfor %}
+          {% for cloth in myclothes%}
+            <h3>{{cloth.name}}</h3>
+            <img src = "{{MEDIA_URL}}{{cloth.image}}">
+          {% endfor %}
+        {% endif %}
       </div>
     </div>
 
