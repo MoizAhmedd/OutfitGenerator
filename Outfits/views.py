@@ -25,7 +25,8 @@ def DashboardView(request):
                 clothes[item.category].append(item)
     for cat in clothes:
         outfit.append(random.choice(clothes[cat]))
-    return render(request,'dashboard.html',{'myclothes':outfit})
+    insufficient = len(clothes.values()) < 2
+    return render(request,'dashboard.html',{'myclothes':outfit,'insufficient':insufficient})
 
 class DashboakrdView(ListView):
     model = ClothingItem
