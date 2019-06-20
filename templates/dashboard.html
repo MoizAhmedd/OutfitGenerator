@@ -72,8 +72,14 @@
             <img src = "{{MEDIA_URL}}{{cloth.image}}">
           {% endfor %}
         {% endif %}
+
+        <div class="clearfix">
+          <center><a class="btn btn-primary" id = "newBtn" href="#">Generate another</a></center>
+        </div>
+
       </div>
     </div>
+    
 
     <!--          {% if cloth.user == user%}
             <h3>{{cloth.name}}</h3>
@@ -99,6 +105,7 @@
     <!-- Bootstrap core JavaScript -->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- Custom scripts for this template -->
     <script>
@@ -107,13 +114,31 @@
 
         // Get the button that opens the modal
         var btn = document.getElementById("myBtn");
+        var newBtn = document.getElementById("newBtn");
 
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
         // When the user clicks the button, open the modal 
+        var clicked = false
         btn.onclick = function() {
           modal.style.display = "block";
+        }
+
+        newBtn.onclick = function(){
+          $.ajax({
+            method:"GET",
+            url: 'http://127.0.0.1:8000/dashboard/',
+            success:function(data){
+              location.reload();
+              console.log('ye')
+              modal.style.display = "block";
+            },
+            failure: function(data){
+              console.log('fail bro')
+            }
+          })
+          //modal.style.display = "block";
         }
 
         // When the user clicks on <span> (x), close the modal
