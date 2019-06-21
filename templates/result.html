@@ -1,2 +1,32 @@
-<html>
-<html>
+<html><body>
+  <h1>Profiles</h1>
+  <ul>
+      {% for cloth in myclothes %}
+        <!--StartName--><h3 id="name">{{cloth.name}}</h3><!--EndName-->
+        <img src = "{{MEDIA_URL}}{{cloth.image}}">
+      {% endfor %}
+      <div class="clearfix">
+        <center><a class="btn btn-primary" id = "myBtn" href="#">Checker</a></center>
+    </div>
+  </ul>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+    var newBtn = document.getElementById("myBtn");
+          newBtn.onclick = function(){
+          $.ajax({
+            method:"GET",
+            url: 'http://127.0.0.1:8000/apidata',
+            success:function(data){
+              console.log('success')
+            },
+            failure: function(data){
+              console.log('fail bro')
+            }
+          })
+          //modal.style.display = "block";
+        }
+  </script>
+
+  </body>
+  </html>
+
