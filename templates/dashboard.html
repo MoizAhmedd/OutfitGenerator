@@ -56,21 +56,24 @@
         <center><a class="btn btn-primary" id = "myBtn" href="#">Generate an Outfit</a></center>
     </div>
 
+
+    
+
     <div id = "myModal" class = "modal">
       <div class = "modal-content">
         <span class = "close">&times;</span>
         
         {% if insufficient %}
-          <center><h3>Could not generate outfit due to lack of clothes!</h3></center>
+          <center><h4>Could not generate outfit due to lack of clothes!</h4></center>
           <div class="clearfix">
             <center><a class="btn btn-primary" href="{% url 'newitem' %}">Click here to add Clothes</a></center>
           </div>
         {% else %}
         <center><h2>Your Outfit!</h2></center>
-          {% for cloth in myclothes%}
-            <h3>{{cloth.name}}</h3>
-            <img src = "{{MEDIA_URL}}{{cloth.image}}">
-          {% endfor %}
+        {% for cloth in myclothes %}
+        <!--StartName--><h3 id="name">{{cloth.name}}</h3><!--EndName-->
+        <!--StartImage--><img src = "{{MEDIA_URL}}{{cloth.image}}"><!--EndImage-->
+      {% endfor %}
         {% endif %}
 
         <div class="clearfix">
@@ -81,12 +84,6 @@
     </div>
     
 
-    <!--          {% if cloth.user == user%}
-            <h3>{{cloth.name}}</h3>
-            <img src = "{{MEDIA_URL}}{{cloth.image}}">
-          {% endif %}
-  -->
-          <!-- Pager -->
 
 
 
@@ -128,11 +125,44 @@
         newBtn.onclick = function(){
           $.ajax({
             method:"GET",
-            url: 'http://127.0.0.1:8000/dashboard/',
+            url: 'http://127.0.0.1:8000/apidata',
             success:function(data){
-              location.reload();
-              console.log('ye')
-              modal.style.display = "block";
+              //First Name indices
+              startingNameIndex = data.indexOf('StartName')+26 //Finds index of beginning of first cloth
+              endingNameIndex = data.indexOf('</h3>') //Finds index of end of FIRST cloth
+              //Second Name indices
+              newData = data.slice(endingNameIndex+5,data.length)
+              secondStartingNameIndex = newData.indexOf('StartName')+26
+              secondEndingNameIndex = newData.indexOf('</h3>')
+              //All names
+              firstNewName = data.slice(startingNameIndex,endingNameIndex)
+              secondNewName = newData.slice(secondStartingNameIndex,secondEndingNameIndex)
+              // Stored all names in array
+              itemNames = [firstNewName,secondNewName]
+
+
+              //First image indices
+              startingImageIndex = data.indexOf('<img')
+              endingImageIndex = data.indexOf('EndImage')-4
+              //Second Image indices 
+              newImageData = data.slice(endingImageIndex+12,data.length)
+              //console.log(newImageData)
+              secondStartingImageIndex = newImageData.indexOf('<img')
+              secondEndingImageIndex = newImageData.indexOf('EndImage')-4
+              //All images
+              firstNewImage = data.slice(startingImageIndex,endingImageIndex)
+              secondNewImage = newImageData.slice(secondStartingImageIndex,secondEndingImageIndex)
+              //Store all images in Array
+              itemImages = [firstNewImage,secondNewImage]
+              //console.log(firstNewImage)
+              //console.log(secondNewImage)
+                //Change name and images of all items
+              for (i=0;i<itemNames.length;i++){
+                  document.getElementsByTagName('h3')[i].innerHTML = itemNames[i]
+                  //console.log(document.getElementsByTagName('img')[i].outerHTML)
+                  //console.log(itemImages[i])
+                  document.getElementsByTagName('img')[i].outerHTML = itemImages[i]
+              }
             },
             failure: function(data){
               console.log('fail bro')
