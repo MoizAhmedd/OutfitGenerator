@@ -3,7 +3,7 @@
   <ul>
       {% for cloth in myclothes %}
         <!--StartName--><h3 id="name">{{cloth.name}}</h3><!--EndName-->
-        <img src = "{{MEDIA_URL}}{{cloth.image}}">
+        <!--StartImage--><img src = "{{MEDIA_URL}}{{cloth.image}}"><!--EndImage-->
       {% endfor %}
       <div class="clearfix">
         <center><a class="btn btn-primary" id = "myBtn" href="#">Checker</a></center>
@@ -18,27 +18,42 @@
             url: 'http://127.0.0.1:8000/apidata',
             success:function(data){
               
+              //First Name indices
               startingNameIndex = data.indexOf('StartName')+26 //Finds index of beginning of first cloth
               endingNameIndex = data.indexOf('</h3>') //Finds index of end of FIRST cloth
-
+              //Second Name indices
               newData = data.slice(endingNameIndex+5,data.length)
               secondStartingNameIndex = newData.indexOf('StartName')+26
               secondEndingNameIndex = newData.indexOf('</h3>')
-
-              
-              //Need a way to change name of all clothes rather than just one
+              //All names
               firstNewName = data.slice(startingNameIndex,endingNameIndex)
               secondNewName = newData.slice(secondStartingNameIndex,secondEndingNameIndex)
-              
-              items = [firstNewName,secondNewName]
-              //console.log(firstNewName)
-              //console.log(secondNewName)
-              for (i=0;i<items.length;i++){
-                document.getElementsByTagName('h3')[i].innerHTML = items[i]
-              }
-              //console.log(document.getElementsByTagName('h3'))
-              //document.getElementById("name").innerHTML = newName
+              // Stored all names in array
+              itemNames = [firstNewName,secondNewName]
 
+
+              //First image indices
+              startingImageIndex = data.indexOf('<img')
+              endingImageIndex = data.indexOf('EndImage')-4
+              //Second Image indices 
+              newImageData = data.slice(endingImageIndex+12,data.length)
+              //console.log(newImageData)
+              secondStartingImageIndex = newImageData.indexOf('<img')
+              secondEndingImageIndex = newImageData.indexOf('EndImage')-4
+              //All images
+              firstNewImage = data.slice(startingImageIndex,endingImageIndex)
+              secondNewImage = newImageData.slice(secondStartingImageIndex,secondEndingImageIndex)
+              //Store all images in Array
+              itemImages = [firstNewImage,secondNewImage]
+              //console.log(firstNewImage)
+              //console.log(secondNewImage)
+                //Change name and images of all items
+              for (i=0;i<itemNames.length;i++){
+                  document.getElementsByTagName('h3')[i].innerHTML = itemNames[i]
+                  //console.log(document.getElementsByTagName('img')[i].outerHTML)
+                  //console.log(itemImages[i])
+                  document.getElementsByTagName('img')[i].outerHTML = itemImages[i]
+              }
             },
             failure: function(data){
               console.log('fail bro')
