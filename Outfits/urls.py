@@ -11,7 +11,8 @@ urlpatterns = [
     path('logout/',auth_views.LogoutView.as_view(),name='logout'),
     path('dashboard/',views.DashboardView,name='dashboard'),
     path('newitem/',views.NewItemView.as_view(),name='newitem'),
-    path('myclothes/',views.MyClothesView.as_view(),name='myclothes')
+    path('myclothes/',views.MyClothesView.as_view(),name='myclothes'),
+    path('apidata/',views.DashboardAPIView.as_view(),name='dashboard-api')
 ]
 
 if settings.DEBUG:
