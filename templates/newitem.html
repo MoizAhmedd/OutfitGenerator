@@ -2,11 +2,25 @@
 <form action = "" method = "POST" enctype="multipart/form-data">
     {% csrf_token %}
   
-  
-    {{form.as_p}}
-  
-    <input type = "submit" value = "save">
-  
+    <div class = "fieldWrapper">
+    <tr><th><label for="id_user">User:</label></th><td><select name="user" required id="id_user">
+        <option value="">---------</option>      
+        <option value={{request.user.id}} selected>{{request.user}}</option>
+      
+      </select></td></tr>
+    <br>
+    <br>
+      <tr><th><label for="id_category">Category:</label></th><td><input type="text" name="category" maxlength="20" required id="id_category"></td></tr> 
+    <br>
+    <br>
+      <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" maxlength="20" required id="id_name"></td></tr>
+    <br>
+    <br>
+      <tr><th><label for="id_image">Image:</label></th><td><input type="file" name="image" accept="image/*" id="id_image"></td></tr>
+    <br>
+    <br>
+    <center><input type = "submit" value = "Add Item to List"></center>
+    </div>
   </form>
   
   
