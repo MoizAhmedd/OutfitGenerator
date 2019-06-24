@@ -24,6 +24,19 @@ class HomePageView(TemplateView):
             'hey':2
         })
 
+ def generate_outfit(user):
+    clothes = {}
+    outfit = []
+    for item in ClothingItem.objects.filter():
+        if item.category not in clothes:
+            if item.user == user:
+                clothes[item.category] = [item]
+        else:
+            if item.user == user:
+                clothes[item.category].append(item)
+    for cat in clothes:
+        outfit.append(random.choice(clothes[cat]))
+    return [outfit,len(clothes.values())]
 
 def DashboardView(request):
     user = request.user
