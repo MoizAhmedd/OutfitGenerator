@@ -6,6 +6,7 @@ from PIL import Image
 # Create your models here.
 class ClothingItem(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
+    #user = request.user
     category = models.CharField(max_length = 20)
     name = models.CharField(max_length = 20)
     image = models.ImageField(default = 'default.jpg',upload_to='clothes_pics')
@@ -17,7 +18,10 @@ class ClothingItem(models.Model):
         return reverse('dashboard')
     
     def save(self):
+        print(self.image)
         super().save()
+        #print(self.category)
+        #user = request.user
         img = Image.open(self.image.path)
 
         if img.height > 300 or img.width > 300:
@@ -25,4 +29,11 @@ class ClothingItem(models.Model):
             img.thumbnail(output_size)
             img.save(self.image.path)
         
+
+class BadOutfit(models.Model):
+    items = models.ManyToManyField(ClothingItem)
+
+    def __str__(self):
+        return "{}".format(self.items)
+
 
