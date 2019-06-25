@@ -80,6 +80,13 @@
           <center><a class="btn btn-primary" id = "newBtn" href="#">Generate another</a></center>
         </div>
 
+        <div class="clearfix">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <center><input class = "btn btn-primary" type="submit" name="Dislike" value="Dislike" /></center>
+            </form>
+        </div>
+
       </div>
     </div>
     
@@ -125,7 +132,7 @@
         newBtn.onclick = function(){
           $.ajax({
             method:"GET",
-            url: 'http://127.0.0.1:8000/apidata',
+            url: 'http://127.0.0.1:8000/dashboard',
             success:function(data){
               //First Name indices
               modal.style.display = "none";
