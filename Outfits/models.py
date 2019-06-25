@@ -36,4 +36,11 @@ class BadOutfit(models.Model):
     def __str__(self):
         return "{}".format(self.items)
 
+class AnticipatedItem(ClothingItem):
+    user = None
+    name = models.CharField(max_Length = 100)
+
+    def __str__(self):
+        return "{}".format(self.name)
+    
 
