@@ -31,16 +31,35 @@ class ClothingItem(models.Model):
         
 
 class BadOutfit(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     items = models.ManyToManyField(ClothingItem)
 
     def __str__(self):
         return "{}".format(self.items)
 
-class AnticipatedItem(ClothingItem):
-    user = None
-    name = models.CharField(max_Length = 100)
+
+class PossibleItem(models.Model):
+    category = models.CharField(max_length = 20,default='upper')
+    name = models.CharField(max_length = 100,default='shirt')
+    image = models.ImageField(default='default.jpg',upload_to='clothes_pics')
 
     def __str__(self):
         return "{}".format(self.name)
     
+    def save(self):
+        super().save()
+        img = Image.open(self.image.path)
+        
+        if img.height > 300 or img.width > 300:
+            output_size = (300,300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
+
+class StyleOne(models.Model):
+    #Alex Costa Youtube Channel
+    season = models.CharField(max_length = 20)
+    items = models.ManyToManyField(PossibleItem)
+    
+    def __str__(self):
+        return "Alex Costa outfit #{}".format(self.id)
 
