@@ -35,7 +35,7 @@ class BadOutfit(models.Model):
     items = models.ManyToManyField(ClothingItem)
 
     def __str__(self):
-        return "{}".format(self.items)
+        return "Outfit:{}, Disliked by {}".format(self.id,self.user)
 
 
 class PossibleItem(models.Model):
