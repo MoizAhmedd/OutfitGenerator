@@ -1,4 +1,20 @@
 from google.cloud import vision
+#Use transfer learning and Indico API to generate outfits based on a users wardrobe, and style preferences.
+#We will need different types of styles
+    #Each type of style will have a variety of outfits
+#The model then tries to use items in current wardrobe, to create outfits such as the one in the selected style.
+
+#Input = clothing items from style preference outfits
+#Output = clothing item from wardrobe
+
+#Will be using Google Cloud Vision API
+    #Require Product Set
+    #Require Product
+    #Require Reference Image
+
+    #Product set contains all products(user items, possibleitems)
+    #Loop through all desired outfits, loop through each item in that outfit, then find similar images
+from google.cloud import vision
 from google.oauth2 import service_account
 import os
 
@@ -177,9 +193,11 @@ def get_similar_products_file(
     # Read the image as a stream of bytes.
     with open(file_path, 'rb') as image_file:
         content = image_file.read()
+        #print(content)
 
     # Create annotate image request along with product search feature.
     image = vision.types.Image(content=content)
+    #print(image)
 
     # product search specific parameters
     product_set_path = product_search_client.product_set_path(
@@ -202,6 +220,7 @@ def get_similar_products_file(
     print('  nanos: {}\n'.format(index_time.nanos))
 
     results = response.product_search_results.results
+    print(results)
 
     print('Search results:')
     for result in results:
@@ -215,3 +234,81 @@ def get_similar_products_file(
             product.display_name))
         print('Product description: {}\n'.format(product.description))
         print('Product labels: {}\n'.format(product.product_labels))
+
+
+#2 product sets created (070319, and 070318)
+#create_product_set("outfitgenerator","us-east1","PS_CLOTH-SHOE_070319","CLOTH-SHOE")
+#create_product("outfitgenerator","us-east1","PS_CLOTH-SHOE_070319","Blye Dress","apparel")
+
+#Each product has unique id
+#create_product("outfitgenerator","us-east1","PS_CLOTH-SHOE_1","Blue Dress","apparel")
+
+#add_product_to_product_set("outfitgenerator","us-east1","PS_CLOTH-SHOE_1","PS_CLOTH-SHOE_070319")
+#create_product("outfitgenerator","us-east1","PS_CLOTH-SHOE_1","Blue Dress","apparel")
+#update_product_labels("outfitgenerator","us-east1","PS_CLOTH-SHOE_1","style","women")
+#update_product_labels("outfitgenerator","us-east1","PS_CLOTH-SHOE_1","category","dress")
+#create_reference_image("outfitgenerator","us-east1","PS_CLOTH-SHOE_1","I_469a896b70ba11e8be97d20059124800_070418","gs://clothmatching/demo-img.jpg")
+#path = "C:/Users/ahmed/Documents/Summer2019/PersonalWebsite/img/possibleheader.jpg"
+#get_similar_products_file("outfitgenerator","us-east1","PS_CLOTH-SHOE_070319", "apparel",path, "category=dress")
+
+#print(os.path.dirname())
+
+#create_product_set("outfitgenerator","us-east1","PS_OUTFITS01","AHMED-OUTFITS")
+
+#Create Products
+
+"""
+#create_product("outfitgenerator","us-east1","AHMEDITEM-01","Beige Jacket","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-01","category","jackets")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-02","Black Jeans","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-02","category","jeans")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-03","Blue Jeans","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-03","category","jeans")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-04","Blue Shirt","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-04","category","shirts")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-05","Brown Shoes","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-05","category","shoes")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-06","Crew Neck","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-06","category","t-shirts")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-07","Green Jacket","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-07","category","jackets")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-08","Nike T Shirt","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-08","category","t-shirts")
+
+#create_product("outfitgenerator","us-east1","AHMEDITEM-09","White Shirt","apparel")
+update_product_labels("outfitgenerator","us-east1","AHMEDITEM-09","category","shirts")
+"""
+
+"""
+create_product_set("outfitgenerator","us-east1","PS_OUTFITS-01","AHMED-OUTFITS")
+
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-01","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-02","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-03","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-04","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-05","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-06","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-07","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-08","PS_OUTFITS-01")
+add_product_to_product_set("outfitgenerator","us-east1","AHMEDITEM-09","PS_OUTFITS-01")
+
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-01","REFIMAGE_01","gs://clothmatching/OutfitGenPics/beigejacket.jpg")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-02","REFIMAGE_02","gs://clothmatching/OutfitGenPics/blackjeans.jpg")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-03","REFIMAGE_03","gs://clothmatching/OutfitGenPics/bluejeans.jpg")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-04","REFIMAGE_04","gs://clothmatching/OutfitGenPics/blueshirt.jpg")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-05","REFIMAGE_05","gs://clothmatching/OutfitGenPics/brownshoes.jfif")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-06","REFIMAGE_06","gs://clothmatching/OutfitGenPics/crewneck.jfif")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-07","REFIMAGE_07","gs://clothmatching/OutfitGenPics/greenjacket.jpg")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-08","REFIMAGE_08","gs://clothmatching/OutfitGenPics/niketshirt.jpg")
+create_reference_image("outfitgenerator","us-east1","AHMEDITEM-09","REFIMAGE_09","gs://clothmatching/OutfitGenPics/whiteshirt.jpg")
+"""
+
+path = r"C:\Users\ahmed\Documents\Summer2019\OutfitGenPics\blackjeans.jpg"
+get_similar_products_file("outfitgenerator","us-east1","PS_OUTFITS-01","apparel",path,"category=jeans")
