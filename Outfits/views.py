@@ -43,27 +43,30 @@ def DashboardView(request):
     badoutfit = request.POST.get('Dislike')
     user = request.user
     outfit = generate_outfit(user)
-    badoutfits = {}
+    badoutfitslist = {}
     is_bad = True
     insufficient = outfit[1] < 2
 
     #Checks badoutfits
     for count,outfits in enumerate(BadOutfit.objects.filter()):
-        badoutfits[count] = []
-        for item in outfits.items.all():
-            badoutfits[count].append(item)
+        #badoutfitslist[count] = []
+        if outfits.user == user:
+            badoutfitslist[count] = []
+            for item in outfits.items.all():
+                badoutfitslist[count].append(item)
 
     #Adds to bad outfit model
     if badoutfit == 'Dislike':
         badoutfits = BadOutfit()
-        for clothing_item in outfit:
+        for clothing_item in outfit[0]:
+            badoutfits.user = request.user
             badoutfits.save()
             badoutfits.items.add(clothing_item)
-    
-    count = len(badoutfits.values())
-    for wear in badoutfits.values():
-        while len(set(wear+outfit[0])) == len(outfit[0]):
-            #print('badone')
+                
+    #print(badoutfitslist)
+    count = len(badoutfitslist.values())
+    for wear in badoutfitslist.values():
+        if len(set(wear+outfit[0])) == len(outfit[0]):
             outfit = generate_outfit(user)
 
     return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':insufficient})
