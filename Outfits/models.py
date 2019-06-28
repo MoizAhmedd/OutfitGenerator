@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from . import generate
 from PIL import Image
 
 # Create your models here.
@@ -18,10 +19,18 @@ class ClothingItem(models.Model):
         return reverse('dashboard')
     
     def save(self):
-        print(self.image)
         super().save()
-        #print(self.category)
-        #user = request.user
+        project_id = "outfitgenerator"
+        location =  "us-east1"
+        product_id = self.user.username + "_" + str(self.id)
+        product_set_id = self.user.username + "_PS"
+        product_display_name = self.name
+        product_category = "apparel"
+        key = "category"
+        value = self.category
+        generate.create_product(project_id,location,product_id,product_display_name,product_category)
+        generate.add_product_to_product_set(project_id,location,product_id,product_set_id)
+        generate.update_product_labels(project_id,location,product_id,key,value)
         img = Image.open(self.image.path)
 
         if img.height > 300 or img.width > 300:
