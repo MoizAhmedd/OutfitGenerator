@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from . import generate
+from . import storage
 from PIL import Image
+import os
 
 # Create your models here.
 class ClothingItem(models.Model):
@@ -20,6 +22,8 @@ class ClothingItem(models.Model):
     
     def save(self):
         super().save()
+
+        #Create Product
         project_id = "outfitgenerator"
         location =  "us-east1"
         product_id = self.user.username + "_" + str(self.id)
@@ -29,8 +33,23 @@ class ClothingItem(models.Model):
         key = "category"
         value = self.category
         generate.create_product(project_id,location,product_id,product_display_name,product_category)
+
+        #Add Product to Product Set
         generate.add_product_to_product_set(project_id,location,product_id,product_set_id)
+
+        #Add product labels
         generate.update_product_labels(project_id,location,product_id,key,value)
+
+        #Upload image to storage
+        path = self.image.path 
+        bucket = "clothmatching"
+        file_name = self.name.replace(" ","") + str(self.id)
+        storage.upload_blob(bucket,path,file_name)
+
+        #Create Reference Image
+        ref_id = "REFIMAGE-" + str(self.id)
+        uri = "gs://clothmatching/" + file_name
+        generate.create_reference_image(project_id,location,product_id,ref_id,uri)
         img = Image.open(self.image.path)
 
         if img.height > 300 or img.width > 300:
