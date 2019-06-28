@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate,login
 from .forms import SignUpForm, ClothingItemForm
 from django.http import HttpResponse, HttpRequest,JsonResponse
 import random
-
+from . import generate
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -146,6 +146,11 @@ def signup(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
+            project_id = "outfitgenerator"
+            location = "us-east1"
+            product_set_id = username + "_PS"
+            product_set_display_name = username + "_OUTFITS"
+            generate.create_product_set(project_id,location,product_set_id,product_set_display_name)
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username = username,password=raw_password)
             login(request,user)
