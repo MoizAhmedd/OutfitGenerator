@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from django.core import serializers
-from .models import ClothingItem, BadOutfit
+from .models import ClothingItem, BadOutfit, StyleOne
 from django.contrib.auth import authenticate,login
 from .forms import SignUpForm, ClothingItemForm
 from django.http import HttpResponse, HttpRequest,JsonResponse
@@ -13,6 +13,7 @@ from . import generate
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+import os
 
 
 
@@ -24,6 +25,39 @@ class HomePageView(TemplateView):
             'hey':2
         })
 
+"""
+#Possible get similar products
+outfits = {}
+styleOne = request.POST.get('StyleOne')
+styleTwo = request.POST.get('StyleTwo')
+styleThree = request.POST.get('StyleThree')
+if styleOne:
+    for count, outfit in styleOne.objects.filter():
+        outfits[count] = []
+        for item in outfit.items.all(): #Get all clothing items in this outfit
+            outfits[count].append()
+            #This should be a clothing item
+                #Get the product name
+                #Find the id
+                #Go through the objects in users outfits
+                #If user object id matches product id
+                #Add to outfits[count]
+return [outfits[random.choice(len(outfits))],len(clothes.values())]
+"""
+def generate_gcp_outfit(user):
+    outfits = {}
+    for count, outfit in enumerate(StyleOne.objects.filter()):
+        outfits[count] = []
+        for item in outfit.items.all():
+            project_id = "outfitgenerator"
+            location = "us-east1"
+            product_set_id = user.username + str("_PS")
+            product_category = "apparel"
+            file_path = item.image.path
+            print(product_set_id)
+            filter = "category=" + str(item.category)
+            #create clothing item from line below/find clothing item
+            generate.get_similar_products_file(project_id,location,"PS_OUTFITS-01",product_category,file_path,filter)
 
 def generate_outfit(user):
     clothes = {}
@@ -39,9 +73,11 @@ def generate_outfit(user):
         outfit.append(random.choice(clothes[cat]))
     return [outfit,len(clothes.values())]
 
+
 def DashboardView(request):
     badoutfit = request.POST.get('Dislike')
     user = request.user
+    generate_gcp_outfit(user)
     outfit = generate_outfit(user)
     badoutfitslist = {}
     is_bad = True
