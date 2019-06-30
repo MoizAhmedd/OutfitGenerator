@@ -1,19 +1,4 @@
 from google.cloud import vision
-#Use transfer learning and Indico API to generate outfits based on a users wardrobe, and style preferences.
-#We will need different types of styles
-    #Each type of style will have a variety of outfits
-#The model then tries to use items in current wardrobe, to create outfits such as the one in the selected style.
-
-#Input = clothing items from style preference outfits
-#Output = clothing item from wardrobe
-
-#Will be using Google Cloud Vision API
-    #Require Product Set
-    #Require Product
-    #Require Reference Image
-
-    #Product set contains all products(user items, possibleitems)
-    #Loop through all desired outfits, loop through each item in that outfit, then find similar images
 from google.cloud import vision
 from google.oauth2 import service_account
 import os
@@ -213,27 +198,107 @@ def get_similar_products_file(
     # Search products similar to the image.
     response = image_annotator_client.product_search(
         image, image_context=image_context)
+    #print(response)
 
     index_time = response.product_search_results.index_time
-    print('Product set index time:')
-    print('  seconds: {}'.format(index_time.seconds))
-    print('  nanos: {}\n'.format(index_time.nanos))
+    #print('Product set index time:')
+    #print('  seconds: {}'.format(index_time.seconds))
+    #print('  nanos: {}\n'.format(index_time.nanos))
 
     results = response.product_search_results.results
-    print(results)
+    #print(results[0].product)
 
-    print('Search results:')
+    print('Most Similar Product')
+    ans = None
+    curr_score = 0
     for result in results:
+        #print(ans)
+        if result.score > curr_score:
+            ans = result
+            curr_score = result.score
+        
         product = result.product
 
         print('Score(Confidence): {}'.format(result.score))
         print('Image name: {}'.format(result.image))
 
         print('Product name: {}'.format(product.name))
-        print('Product display name: {}'.format(
-            product.display_name))
+        print('Product display name: {}'.format(product.display_name))
         print('Product description: {}\n'.format(product.description))
         print('Product labels: {}\n'.format(product.product_labels))
+
+def list_product_sets(project_id, location):
+    """List all product sets.
+    Args:
+        project_id: Id of the project.
+        location: A compute region name.
+    """
+    client = vision.ProductSearchClient(credentials = credentials)
+
+    # A resource that represents Google Cloud Platform location.
+    location_path = client.location_path(
+        project=project_id, location=location)
+
+    # List all the product sets available in the region.
+    product_sets = client.list_product_sets(parent=location_path)
+
+    # Display the product set information.
+    for product_set in product_sets:
+        print('Product set name: {}'.format(product_set.name))
+        print('Product set id: {}'.format(product_set.name.split('/')[-1]))
+        print('Product set display name: {}'.format(product_set.display_name))
+        print('Product set index time:')
+        print('  seconds: {}'.format(product_set.index_time.seconds))
+        print('  nanos: {}\n'.format(product_set.index_time.nanos))
+    #print(ans)
+
+def list_products(project_id, location):
+    """List all products.
+    Args:
+        project_id: Id of the project.
+        location: A compute region name.
+    """
+    client = vision.ProductSearchClient(credentials=credentials)
+
+    # A resource that represents Google Cloud Platform location.
+    location_path = client.location_path(project=project_id, location=location)
+
+    # List all the products available in the region.
+    products = client.list_products(parent=location_path)
+
+    # Display the product information.
+    for product in products:
+        print('Product name: {}'.format(product.name))
+        print('Product id: {}'.format(product.name.split('/')[-1]))
+        print('Product display name: {}'.format(product.display_name))
+        print('Product description: {}'.format(product.description))
+        print('Product category: {}'.format(product.product_category))
+        print('Product labels: {}\n'.format(product.product_labels))
+
+def list_reference_images(
+        project_id, location, product_id):
+    """List all images in a product.
+    Args:
+        project_id: Id of the project.
+        location: A compute region name.
+        product_id: Id of the product.
+    """
+    client = vision.ProductSearchClient(credentials = credentials)
+
+    # Get the full path of the product.
+    product_path = client.product_path(
+        project=project_id, location=location, product=product_id)
+
+    # List all the reference images available in the product.
+    reference_images = client.list_reference_images(parent=product_path)
+
+    # Display the reference image information.
+    for image in reference_images:
+        print('Reference image name: {}'.format(image.name))
+        print('Reference image id: {}'.format(image.name.split('/')[-1]))
+        print('Reference image uri: {}'.format(image.uri))
+        print('Reference image bounding polygons: {}'.format(
+            image.bounding_polys))
 
 
 #2 product sets created (070319, and 070318)
@@ -310,5 +375,18 @@ create_reference_image("outfitgenerator","us-east1","AHMEDITEM-08","REFIMAGE_08"
 create_reference_image("outfitgenerator","us-east1","AHMEDITEM-09","REFIMAGE_09","gs://clothmatching/OutfitGenPics/whiteshirt.jpg")
 """
 
-path = r"C:\Users\ahmed\Documents\Summer2019\OutfitGenPics\blackjeans.jpg"
-get_similar_products_file("outfitgenerator","us-east1","PS_OUTFITS-01","apparel",path,"category=jeans")
+
+
+#path = r"C:\Users\ahmed\Documents\Summer2019\OutfitGenerator\media\clothes_pics\bluejeans_Sq7tsC7.jpg"
+#get_similar_products_file("outfitgenerator","us-east1","ryan_PS","apparel",path,"category=pants")
+#list_product_sets("outfitgenerator","us-east1")
+#list_products("outfitgenerator","us-east1")
+#list_reference_images("outfitgenerator","us-east1","AHMEDITEM-03")
+
+#Following path works
+#path = r"C:\Users\ahmed\Documents\Summer2019\OutfitGenPics\blackjeans.jpg"
+#get_similar_products_file("outfitgenerator","us-east1","PS_OUTFITS-01","apparel",path,"category=jeans")
+
+#PS_OUTFTS-01 product set works only for some reason
+def add(a,b):
+    return a+b
