@@ -54,10 +54,30 @@ def generate_gcp_outfit(user):
             product_set_id = user.username + str("_PS")
             product_category = "apparel"
             file_path = item.image.path
-            print(product_set_id)
+            #print(product_set_id)
             filter = "category=" + str(item.category)
             #create clothing item from line below/find clothing item
-            generate.get_similar_products_file(project_id,location,"PS_OUTFITS-01",product_category,file_path,filter)
+            #print(item)
+            product_id = generate.get_similar_products_file(project_id,location,product_set_id,product_category,file_path,filter)
+            for my_item in ClothingItem.objects.filter():
+                if my_item.user == user:
+                    if my_item.id == int(product_id):
+                        outfits[count].append(my_item)
+                        #print(my_item.name,my_item.id,product_id)
+                    #print(product_id,my_item.id)
+                #print(product_id,my_item.user,my_item.id)
+                #outfits[count].append(my_item)
+    key = random.choice(list(outfits.keys()))
+    print(outfits[key])
+    return outfits[key]
+
+def insufficient_check(user):
+    num_items = 0
+    for item in ClothingItem.objects.filter():
+        if item.user == user:
+            num_items += 1
+    return num_items < 2
+
 
 def generate_outfit(user):
     clothes = {}
@@ -77,11 +97,11 @@ def generate_outfit(user):
 def DashboardView(request):
     badoutfit = request.POST.get('Dislike')
     user = request.user
-    generate_gcp_outfit(user)
-    outfit = generate_outfit(user)
+    #generate_gcp_outfit(user)
+    outfit = generate_gcp_outfit(user)
     badoutfitslist = {}
     is_bad = True
-    insufficient = outfit[1] < 2
+    insufficient = insufficient_check(user)
 
     #Checks badoutfits
     for count,outfits in enumerate(BadOutfit.objects.filter()):
@@ -94,7 +114,7 @@ def DashboardView(request):
     #Adds to bad outfit model
     if badoutfit == 'Dislike':
         badoutfits = BadOutfit()
-        for clothing_item in outfit[0]:
+        for clothing_item in outfit:
             badoutfits.user = request.user
             badoutfits.save()
             badoutfits.items.add(clothing_item)
@@ -102,10 +122,11 @@ def DashboardView(request):
     #print(badoutfitslist)
     count = len(badoutfitslist.values())
     for wear in badoutfitslist.values():
-        if len(set(wear+outfit[0])) == len(outfit[0]):
-            outfit = generate_outfit(user)
+        if len(set(wear+outfit)) == len(outfit):
+            #all items same, outfit is a bad one
+            outfit = generate_gcp_outfit(user)
 
-    return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':insufficient})
+    return render(request,'dashboard.html',{'myclothes':outfit,'insufficient':insufficient})
 
 class DashboardAPIView(APIView):
     renderer_classes = [TemplateHTMLRenderer]
