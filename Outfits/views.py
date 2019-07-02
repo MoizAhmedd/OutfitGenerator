@@ -69,7 +69,7 @@ def generate_gcp_outfit(user):
                 #outfits[count].append(my_item)
     key = random.choice(list(outfits.keys()))
     print(outfits[key])
-    return outfits[key]
+    return [outfits[key],len(outfits)]
 
 def insufficient_check(user):
     num_items = 0
@@ -114,7 +114,7 @@ def DashboardView(request):
     #Adds to bad outfit model
     if badoutfit == 'Dislike':
         badoutfits = BadOutfit()
-        for clothing_item in outfit:
+        for clothing_item in outfit[0]:
             badoutfits.user = request.user
             badoutfits.save()
             badoutfits.items.add(clothing_item)
@@ -122,11 +122,18 @@ def DashboardView(request):
     #print(badoutfitslist)
     count = len(badoutfitslist.values())
     for wear in badoutfitslist.values():
-        if len(set(wear+outfit)) == len(outfit):
+        if len(set(wear+outfit[0])) == len(outfit[0]) and len(badoutfitslist) != outfit:
             #all items same, outfit is a bad one
+            #If length of badoutfits = length of total outfits, then insufficient
+            #if len(badoutfitslist) == outfit[1]:
+                #insufficient = True
+            #else:
             outfit = generate_gcp_outfit(user)
 
-    return render(request,'dashboard.html',{'myclothes':outfit,'insufficient':insufficient})
+    if len(badoutfitslist) == outfit[1]:
+        return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':True})
+    else:
+        return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':insufficient})
 
 class DashboardAPIView(APIView):
     renderer_classes = [TemplateHTMLRenderer]
