@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 from django.core import serializers
-from .models import ClothingItem, BadOutfit, StyleOne
+from .models import ClothingItem, BadOutfit, StyleOne, StyleTwo, StyleThree
 from django.contrib.auth import authenticate,login
 from .forms import SignUpForm, ClothingItemForm
 from django.http import HttpResponse, HttpRequest,JsonResponse
@@ -44,9 +44,17 @@ if styleOne:
                 #Add to outfits[count]
 return [outfits[random.choice(len(outfits))],len(clothes.values())]
 """
-def generate_gcp_outfit(user):
+def generate_gcp_outfit(user,style):
     outfits = {}
-    for count, outfit in enumerate(StyleOne.objects.filter()):
+    objects = []
+    if style == 1:
+        objects = StyleOne.objects.filter()
+        #print(objects)
+    if style == 2:
+        objects = StyleTwo.objects.filter()
+    if style == 3:
+        objects = StyleThree.objects.filter()
+    for count, outfit in enumerate(objects):
         outfits[count] = []
         for item in outfit.items.all():
             project_id = "outfitgenerator"
@@ -67,9 +75,13 @@ def generate_gcp_outfit(user):
                     #print(product_id,my_item.id)
                 #print(product_id,my_item.user,my_item.id)
                 #outfits[count].append(my_item)
-    key = random.choice(list(outfits.keys()))
-    print(outfits[key])
-    return [outfits[key],len(outfits)]
+    #print(outfits[key])
+    try:
+        key = random.choice(list(outfits.keys()))
+        print(outfits[key])
+        return [outfits[key],len(outfits)]
+    except IndexError:
+        return [] 
 
 def insufficient_check(user):
     num_items = 0
@@ -96,9 +108,23 @@ def generate_outfit(user):
 
 def DashboardView(request):
     badoutfit = request.POST.get('Dislike')
+    StyleOne = request.POST.get('Alex Costa Outfits')
+    StyleTwo = request.POST.get('Alpha M Outfits')
+    StyleThree = request.POST.get('TMF Outfits')
+    #print(StyleTwo)
     user = request.user
     #generate_gcp_outfit(user)
-    outfit = generate_gcp_outfit(user)
+    #if StyleOne == 'StyleOne':
+    outfit = generate_gcp_outfit(user,1)
+    if StyleOne == "StyleOne":
+        outfit = generate_gcp_outfit(user,1)
+    if StyleTwo == "StyleTwo":
+        print('Alpha')
+        outfit = generate_gcp_outfit(user,2)
+    if StyleThree == "StyleThree":
+        print('TMF')
+        outfit = generate_gcp_outfit(user,3)
+    print(StyleOne,StyleTwo,StyleThree)
     badoutfitslist = {}
     is_bad = True
     insufficient = insufficient_check(user)
@@ -128,7 +154,10 @@ def DashboardView(request):
             #if len(badoutfitslist) == outfit[1]:
                 #insufficient = True
             #else:
-            outfit = generate_gcp_outfit(user)
+            if StyleOne == "StyleOne":
+                outfit = generate_gcp_outfit(user,1)
+            if StyleTwo == "StyleTwo":
+                outfit = generate_gcp_outfit(user,2)
 
     if len(badoutfitslist) == outfit[1]:
         return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':True})
