@@ -56,8 +56,15 @@
         <center><a class="btn btn-primary" id = "myBtn" href="#">Generate an Outfit</a></center>
     </div>
 
+    <div class="clearfix">
+      <form action = "" method = "POST">
+        {% csrf_token %}
+        <center><input type = "submit" name = "Alex Costa Outfits" value = "StyleOne"></center>
+        <center><input type = "submit" name = "Alpha M Outfits" value = "StyleTwo"></center>
+        <center><input type = "submit" name = "TMF Outfits" value = "StyleThree"></center>
+      </form>
+    </div>
 
-    
 
     <div id = "myModal" class = "modal">
       <div class = "modal-content">
@@ -73,19 +80,19 @@
         {% for cloth in myclothes %}
 <!--Name--><h3 id="name">{{cloth.name}}</h3><!--EndName-->
 <!--Image--><img src = "{{MEDIA_URL}}{{cloth.image}}"><!--EndImage-->
+            <div class="clearfix">
+              <center><a class="btn btn-primary" id = "newBtn" href="#">Generate another</a></center>
+            </div>
+
+            <div class="clearfix">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <center><input class = "btn btn-primary" type="submit" name="Dislike" value="Dislike" /></center>
+                </form>
+            </div>
       {% endfor %}
         {% endif %}
 
-        <div class="clearfix">
-          <center><a class="btn btn-primary" id = "newBtn" href="#">Generate another</a></center>
-        </div>
-
-        <div class="clearfix">
-            <form action="" method="POST">
-                {% csrf_token %}
-                <center><input class = "btn btn-primary" type="submit" name="Dislike" value="Dislike" /></center>
-            </form>
-        </div>
 
       </div>
     </div>
