@@ -71,14 +71,16 @@
 
     <div id = "myModal" class = "modal">
       <div class = "modal-content">
-        <span class = "close">&times;</span>
+        
         
         {% if insufficient %}
           <center><h4>Could not generate outfit due to lack of clothes!</h4></center>
+          <a href = "{% url 'dashboard' %}"><span class = "close">&times;</span></a>
           <div class="clearfix">
             <center><a class="btn btn-primary" href="{% url 'newitem' %}">Click here to add Clothes</a></center>
           </div>
         {% else %}
+        <span class = "close">&times;</span>
         <center><h2>Your Outfit!</h2></center>
         {% for cloth in myclothes %}
 <!--Name--><h3 id="name">{{cloth.name}}</h3><!--EndName-->
