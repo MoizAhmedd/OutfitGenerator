@@ -72,8 +72,13 @@
     <div id = "myModal" class = "modal">
       <div class = "modal-content">
         
-        
-        {% if insufficient %}
+        {% if not styleChosen %}
+        <center><h4>No Style Preference Selected!</h4></center>
+        <a href = "{% url 'dashboard' %}"><span class = "close">&times;</span></a>
+        <div class="clearfix">
+          <center><a class="btn btn-primary" id = "choiceBtn" href="#">Choose Style Preference</a></center>
+        </div>
+        {% elif insufficient %}
           <center><h4>Could not generate outfit due to lack of clothes!</h4></center>
           <a href = "{% url 'dashboard' %}"><span class = "close">&times;</span></a>
           <div class="clearfix">
@@ -104,9 +109,9 @@
 
     <div id = "myModal1" class = "modal">
       <div class = "modal-content">
-        <span class = "close">&times;</span>
+        <a href = "{% url 'dashboard' %}"><span id = "closeChoice">&times;</span></a>
         <div class="clearfix">
-          <form action = "" method = "POST">
+          <form id = "choiceForm" action = "" method = "POST">
             {% csrf_token %}
             <img src = "{% static 'img/alexcosta.jpg' %}" height = "300" width = "300">
             <input class  = "btn btn-primary" type = "submit" id = "Style1" name = "Alex Costa Outfits" value = "StyleOne">
@@ -162,6 +167,7 @@
 
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
+        var closeChoice = document.getElementById("closeChoice")
 
         // When the user clicks the button, open the modal 
         var clicked = false
@@ -169,17 +175,27 @@
           choiceModal.style.display = "none";
           loadingModal.style.display = "block";
         }
+        styleTwo.onclick = function(){
+          choiceModal.style.display = "none";
+          loadingModal.style.display = "block";
+        }
+        styleThree.onclick = function(){
+          choiceModal.style.display = "none";
+          loadingModal.style.display = "block";
+        }
         btn.onclick = function() {
-          alert("hey you clicked me")
+          //alert("hey you clicked me")
           modal.style.display = "block";
         }
 
         choiceBtn.onclick = function(){
-          alert("hey you clicked me")
+          //alert("hey you clicked me")
           choiceModal.style.display = "block";
         }
 
         newBtn.onclick = function(){
+          var form = document.getElementById("choiceForm")
+          var form1 = $('#choiceForm')
           $.ajax({
             method:"GET",
             url: 'http://127.0.0.1:8000/dashboard',
@@ -222,7 +238,13 @@
 
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
+          //alert("hey you clicked me")
           modal.style.display = "none";
+
+        }
+
+        closeChoice.onclick = function(){
+          alert("hey")
           choiceModal.style.display = "none";
         }
 
