@@ -45,6 +45,7 @@ if styleOne:
 return [outfits[random.choice(len(outfits))],len(clothes.values())]
 """
 def generate_gcp_outfit(user,style):
+    print(style)
     if style == 0:
         return [[]]
     outfits = {}
@@ -108,7 +109,7 @@ def generate_outfit(user):
     return [outfit,len(clothes.values())]
 
 
-def DashboardView(request):
+def DashboardView(request,style):
     badoutfit = request.POST.get('Dislike')
     StyleOne = request.POST.get('Alex Costa Outfits')
     StyleTwo = request.POST.get('Alpha M Outfits')
@@ -116,17 +117,18 @@ def DashboardView(request):
     styleChosen = None
     #print(StyleTwo)
     user = request.user
+    outfit = generate_gcp_outfit(user,style)
     #generate_gcp_outfit(user)
     #if StyleOne == 'StyleOne':
-    outfit = generate_gcp_outfit(user,0)
-    if StyleOne == "StyleOne":
-        outfit = generate_gcp_outfit(user,1)
-    if StyleTwo == "StyleTwo":
-        print('Alpha')
-        outfit = generate_gcp_outfit(user,2)
-    if StyleThree == "StyleThree":
-        print('TMF')
-        outfit = generate_gcp_outfit(user,3)
+    #outfit = generate_gcp_outfit(user,0)
+    #if StyleOne == "StyleOne":
+     #   outfit = generate_gcp_outfit(user,1)
+    #if StyleTwo == "StyleTwo":
+    #    print('Alpha')
+    #    outfit = generate_gcp_outfit(user,2)
+    #if StyleThree == "StyleThree":
+    #    print('TMF')
+    #    outfit = generate_gcp_outfit(user,3)
     print(StyleOne,StyleTwo,StyleThree)
     badoutfitslist = {}
     is_bad = True
@@ -158,22 +160,23 @@ def DashboardView(request):
                 #insufficient = True
             #else:
             if StyleOne == "StyleOne":
-                outfit = generate_gcp_outfit(user,1)
+                outfit = generate_gcp_outfit(user,style)
             if StyleTwo == "StyleTwo":
-                outfit = generate_gcp_outfit(user,2)
+                outfit = generate_gcp_outfit(user,style)
             if StyleThree == "StyleThree":
-                outfit = generate_gcp_outfit(user,3)
+                outfit = generate_gcp_outfit(user,style)
     
-    if not (StyleOne or StyleTwo or StyleThree):
+    if not (style == 1 or style == 2 or style == 3):
         styleChosen = False
     else:
         styleChosen = True
 
     if len(outfit[0]) <= 2:
-        return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':True,'styleChosen':styleChosen})
+        return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':True,'styleChosen':styleChosen,'style':style})
+    
     
     #Fix this so bad outfits aren't generated
-    return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':insufficient,'styleChosen':styleChosen})
+    return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':insufficient,'styleChosen':styleChosen,'style':style})
 
 class DashboardAPIView(APIView):
     renderer_classes = [TemplateHTMLRenderer]
