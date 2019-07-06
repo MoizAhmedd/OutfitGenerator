@@ -74,13 +74,13 @@
         
         {% if not styleChosen %}
         <center><h4>No Style Preference Selected!</h4></center>
-        <a href = "{% url 'dashboard' %}"><span class = "close">&times;</span></a>
+        <a href = "{% url 'dashboard' 0%}"><span class = "close">&times;</span></a>
         <div class="clearfix">
           <center><a class="btn btn-primary" id = "choiceBtn" href="#">Choose Style Preference</a></center>
         </div>
         {% elif insufficient %}
           <center><h4>Could not generate outfit due to lack of clothes!</h4></center>
-          <a href = "{% url 'dashboard' %}"><span class = "close">&times;</span></a>
+          <a href = "{% url 'dashboard' 0%}"><span class = "close">&times;</span></a>
           <div class="clearfix">
             <center><a class="btn btn-primary" href="{% url 'newitem' %}">Click here to add Clothes</a></center>
           </div>
@@ -109,16 +109,16 @@
 
     <div id = "myModal1" class = "modal">
       <div class = "modal-content">
-        <a href = "{% url 'dashboard' %}"><span id = "closeChoice">&times;</span></a>
+        <a href = "{% url 'dashboard' 0%}"><span id = "closeChoice">&times;</span></a>
         <div class="clearfix">
           <form id = "choiceForm" action = "" method = "POST">
             {% csrf_token %}
             <img src = "{% static 'img/alexcosta.jpg' %}" height = "300" width = "300">
-            <input class  = "btn btn-primary" type = "submit" id = "Style1" name = "Alex Costa Outfits" value = "StyleOne">
+             <a class="btn btn-primary" id = "Style1" href="{% url 'dashboard' 1%}">Alex Costa Outfits</a>
             <img src = "{% static 'img/alpham.jpg' %}" height = "300" width = "300">
-            <input class  = "btn btn-primary" type = "submit" id = "Style2" name = "Alpha M Outfits" value = "StyleTwo">
+            <a class="btn btn-primary" id = "Style2" href="{% url 'dashboard' 2%}">Alpha M Outfits</a>
             <img src = "{% static 'img/TMF.jpg' %}" height = "300" width = "300" >
-            <input class  = "btn btn-primary" type = "submit" id = "Style3" name = "TMF Outfits" value = "StyleThree">
+            <a class="btn btn-primary" id = "Style3" href="{% url 'dashboard' 3%}">Jose Zuniga Outfits</a>
           </form>
         </div>
       </div>
@@ -138,8 +138,8 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-
             <p class="copyright text-muted">Copyright &copy; Sober Society</p>
+            <h5 id = "num">{{style}}</h5>
           </div>
         </div>
       </div>
@@ -153,6 +153,7 @@
     <!-- Custom scripts for this template -->
     <script>
       // Get the modal
+        var currStyle = document.getElementById("num")
         var modal = document.getElementById("myModal");
         var choiceModal = document.getElementById("myModal1")
         var loadingModal = document.getElementById("loadingModal")
@@ -169,6 +170,8 @@
         var span = document.getElementsByClassName("close")[0];
         var closeChoice = document.getElementById("closeChoice")
 
+        currStyle.style.display = "none";
+
         // When the user clicks the button, open the modal 
         var clicked = false
         styleOne.onclick = function(){
@@ -184,6 +187,7 @@
           loadingModal.style.display = "block";
         }
         btn.onclick = function() {
+          alert('http://127.0.0.1:8000/dashboard/' + currStyle.innerHTML)
           //alert("hey you clicked me")
           modal.style.display = "block";
         }
@@ -194,11 +198,10 @@
         }
 
         newBtn.onclick = function(){
-          var form = document.getElementById("choiceForm")
-          var form1 = $('#choiceForm')
+          var url = 'http://127.0.0.1:8000/dashboard/' + currStyle.innerHTML
           $.ajax({
             method:"GET",
-            url: 'http://127.0.0.1:8000/dashboard',
+            url: url,
             success:function(data){
               //First Name indices
               modal.style.display = "none";
