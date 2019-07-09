@@ -1,15 +1,54 @@
-<head><title> Log in </title> </head>
-{% load static %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<form method = "post">
-  {% csrf_token %}
-  {{form.as_p}}
-  <button type = "submit">Login</button>
+  <head>
 
-  </form>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-No Account? <a href = "/signup">Create One!</a>
-<hr>
+    <title>Outfit Generator|Login</title>
 
-{% endblock %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body id="login-page">
+
+    <!-- Navigation -->
+
+
+    <!-- Header -->
+    <h3> Please Log In</h3>
+    <form method = "post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class = "btn btn-primary" type = "submit">Login</button>
+      
+    </form>
+    
+    <div class = "prompt">
+      No Account? <a href = "/signup">Create One!</a>
+    </div>
+    <!-- Bootstrap core JavaScript -->
+
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Plugin JavaScript -->
+
+    <!-- Custom scripts for this template -->
+
+  </body>
+
+</html>
