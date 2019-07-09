@@ -126,7 +126,7 @@
     
     <div id = "loadingModal" class = "modal">
       <div class = "modal-content">
-        <center><p>Please wait while we come up with outfits! May take 5 seconds to refresh page</p></center>
+        <img src = "{% static 'img/loading.jpg' %}">
       </div>
     </div>
 
@@ -187,7 +187,7 @@
           loadingModal.style.display = "block";
         }
         btn.onclick = function() {
-          alert('http://127.0.0.1:8000/dashboard/' + currStyle.innerHTML)
+          //alert('http://127.0.0.1:8000/dashboard/' + currStyle.innerHTML)
           //alert("hey you clicked me")
           modal.style.display = "block";
         }
@@ -198,13 +198,15 @@
         }
 
         newBtn.onclick = function(){
+          modal.style.display = "none";
+          loadingModal.style.display = "block";
           var url = 'http://127.0.0.1:8000/dashboard/' + currStyle.innerHTML
           $.ajax({
             method:"GET",
             url: url,
             success:function(data){
               //First Name indices
-              modal.style.display = "none";
+              loadingModal.style.display = "none";
               modal.style.display = "block";
               // Stored all names in array
               itemNames = []
