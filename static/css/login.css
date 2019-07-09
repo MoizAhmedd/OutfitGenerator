@@ -1,0 +1,10 @@
+body{
+    margin: 0;
+    background-color: #edeff2;
+    text-align:center;
+    transform: translate(0,100%)
+}
+
+.prompt{
+    margin-top:1%
+}
