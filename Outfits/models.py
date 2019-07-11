@@ -18,7 +18,7 @@ class ClothingItem(models.Model):
         return "{}'s {}".format(self.user.username,self.name)
     
     def get_absolute_url(self):
-        return reverse('dashboard')
+        return reverse('dashboard',kwargs = {style:0})
     
     def save(self):
         super().save()
@@ -91,3 +91,18 @@ class StyleOne(models.Model):
     def __str__(self):
         return "Alex Costa outfit #{}".format(self.id)
 
+class StyleTwo(models.Model):
+    #AlphaM Youtube Channel
+    season = models.CharField(max_length = 20)
+    items = models.ManyToManyField(PossibleItem)
+    
+    def __str__(self):
+        return "AlphaM outfit #{}".format(self.id)
+
+class StyleThree(models.Model):
+    #TMF Youtube Channel
+    season = models.CharField(max_length = 20)
+    items = models.ManyToManyField(PossibleItem)
+    
+    def __str__(self):
+        return "TMF outfit #{}".format(self.id)
