@@ -1,26 +1,86 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
 
-<form action = "" method = "POST" enctype="multipart/form-data">
-    {% csrf_token %}
-  
-    <div class = "fieldWrapper">
-    <tr><th><label for="id_user">User:</label></th><td><select name="user" required id="id_user">
-        <option value="">---------</option>      
-        <option value={{request.user.id}} selected>{{request.user}}</option>
-      
-      </select></td></tr>
-    <br>
-    <br>
-      <tr><th><label for="id_category">Category:</label></th><td><input type="text" name="category" maxlength="20" required id="id_category"></td></tr> 
-    <br>
-    <br>
-      <tr><th><label for="id_name">Name:</label></th><td><input type="text" name="name" maxlength="20" required id="id_name"></td></tr>
-    <br>
-    <br>
-      <tr><th><label for="id_image">Image:</label></th><td><input type="file" name="image" accept="image/*" id="id_image"></td></tr>
-    <br>
-    <br>
-    <center><input type = "submit" value = "Add Item to List"></center>
-    </div>
-  </form>
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/clean-blog.min.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-color: #232323">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="page-heading">
+              <h1 style = "color: white !important">Add Item</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Navigation -->
+
+
+    <!-- Form -->
+    <form action = "" method = "POST" enctype="multipart/form-data">
+      {% csrf_token %}
+    
+      <div class = "form-group">
+      <tr><th><label for="id_user">User:</label></th><td><select class = "form-control" name="user" required id="id_user">
+          <option value={{request.user.id}} selected>{{request.user}}</option>
+        
+        </select></td></tr>
+      <br>
+      <br>
+        <tr><th><label for="id_category">Category:</label></th><td><input class = "form-control" type="text" name="category" maxlength="20" required id="id_category"></td></tr> 
+      <br>
+      <br>
+        <tr><th><label for="id_name">Name:</label></th><td><input class = "form-control" type="text" name="name" maxlength="20" required id="id_name"></td></tr>
+      <br>
+      <br>
+        <tr><th><label for="id_image">Image:</label></th><td><input class = "form-control-file" type="file" name="image" accept="image/*" id="id_image"></td></tr>
+      <br>
+      <br>
+      <center><input class = "btn btn-primary" type = "submit" value = "Add Item to List"></center>
+      </div>
+    </form>
+    <!-- Bootstrap core JavaScript -->
+
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Plugin JavaScript -->
+
+    <!-- Custom scripts for this template -->
+
+  </body>
+
+</html>
+
+
+
   
   
