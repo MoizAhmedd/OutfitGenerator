@@ -21,6 +21,7 @@
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/clean-blog.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
 
   </head>
 
@@ -29,27 +30,115 @@
     <!-- Navigation -->
 
     <!-- Page Header -->
-    <header class="masthead" style="background-image: url('/static/img/possible-head2.jpg')">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="page-heading">
-              <h1 style = "color: white !important">Hello {{user.username}}</h1>
-            </div>
-          </div>
+    <header class="masthead text-center text-white">
+      <div class="masthead-content">
+        <div class="container">
+          <h1 class="masthead-heading mb-0">Hello {{user.username}}</h1>
         </div>
       </div>
     </header>
 
-    <!-- Post Content -->
-    <!-- Main Content -->
-    <div class="clearfix">
-      <a class="btn btn-primary float-right" href="{% url 'newitem' %}">Add Clothes</a>
-    </div>
 
+    <!-- Post Content -->
+    <section>
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 order-lg-2">
+            <div class="p-5">
+              <img class="img-fluid rounded-circle" src="{% static 'img/addclothes.jpg'%}" alt="">
+            </div>
+          </div>
+          <div class="col-lg-6 order-lg-1">
+            <div class="p-5">
+                <a href="{% url 'newitem' %}"><h2 class="display-4">Add Clothes</h2></a>
+              
+              <p>Add all your current clothing items, and we'll use them to create amazing outfits!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+  {% if not styleChosen %}
+  <section>
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <div class="p-5">
+              <img class="img-fluid rounded-circle" src="{% static 'img/choosestyle.jpg'%}" alt="">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="p-5">
+                <a  id = "choiceBtn" href="#"><h2 class="display-4">Choose a style preference.</h2></a>
+              <p>What do you want to look like? We'll use your clothing items to generate outfits similar to your style preferences.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+    <!-- Main Content -->
+  
+    {% if styleChosen %}
+    <section>
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="p-5">
+                <img class="img-fluid rounded-circle" src="{% static 'img/choosestyle.jpg'%}" alt="">
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                  <a  id = "choiceBtn" href="#"><h2 class="display-4">Change Style</h2></a>
+                <p>What do you want to look like? We'll use your clothing items to generate outfits similar to your style preferences.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    <section>
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2">
+              <div class="p-5">
+                <img class="img-fluid rounded-circle" src="{% static 'css/generate.jpg'%}" alt="">
+              </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+              <div class="p-5">
+                  <a id = "myBtn" href="#"><h2 class="display-4">Generate Outfit</h2></a>
+                <p>We will pick your next oufit, to prevent you from having to think about it, while still looking great!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <section>
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="p-5">
+                <img class="img-fluid rounded-circle" src="{% static 'img/bg-masthead.jpg' %}" alt="">
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                  <a href="{% url 'myclothes' %}"><h2 class="display-4">View my clothes</h2></a>
+                <p>Have a look to see if you've added all your clothes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+<!--Possibly Needed
     <div class="clearfix">
-        <a class="btn btn-primary float-left " href="{% url 'myclothes' %}">View my Clothes/Outfits</a>
+        <a href="{% url 'myclothes' %}"><h2 class="display-4">View my clothes</h2></a>
     </div>
 
     {% if not styleChosen %}
@@ -66,9 +155,10 @@
 
 
     <div class="clearfix">
-        <center><a class="btn btn-primary" id = "myBtn" href="#">Generate an Outfit</a></center>
+        <center><a id = "myBtn" href="#"><h2 class="display-4">Generate Outfit</h2></a></center>
     </div>
-
+-->
+<!--Modals-->
     <div id = "myModal" class = "modal">
       <div class = "modal-content">
         
@@ -138,7 +228,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
-            <p class="copyright text-muted">Copyright &copy; Sober Society</p>
+            <p class="copyright text-muted">Copyright &copy; Outfit Generator</p>
             <h5 id = "num">{{style}}</h5>
           </div>
         </div>
