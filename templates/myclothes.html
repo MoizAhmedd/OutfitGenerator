@@ -1,11 +1,76 @@
 {% load staticfiles %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+	<title>Your Clothes</title>
+	<meta charset="UTF-8">
+	<!-- Stylesheets -->
+	<link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"/>
+	<!-- Main Stylesheets -->
+	<link rel="stylesheet" href="{% static 'css/viewclothes.css' %}"/>
+</head>
+<body>
+	<!-- Page Preloder -->
+	<div id="preloder">
+		<div class="loader"></div>
+	</div>
 
 
-<h1>{{user.username}} Clothes</h1>
+	<!-- Header section -->
+	<header class="header-section">
+		<div class="container">
+            <nav>
+                <ul>
+                    <li><a href="#" class="site-logo">
+                       <h2 style = "color:white;"></h2>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+		</div>
+	</header>	
+	
+	<!-- Shop section  -->
+	<section class="shop-section">
+        <center><h1>Your Clothes</h1></center>
+		<div class="container">
+			<div class="row">
+                {% for cloth in clothes %}
+                    {% if cloth.user == user%}
+                        <div class="col-lg-3 col-sm-6">
+                            <div class="shop-item">
+                                <img src="{{MEDIA_URL}}{{cloth.image}}" alt="">
+                                <h3>{{cloth.name}}</h3>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+			</div>
+		</div>
+	</section>
+	<!-- Shop section end -->
+	
 
-{% for cloth in clothes%}
-    {% if cloth.user == user%}
-    <h1>{{cloth.name}}</h1>
-    <img src = "{{MEDIA_URL}}{{cloth.image}}">
-    {% endif %}
-{% endfor %}
+
+
+	<!-- Footer section -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-10 mx-auto">
+            <p class="copyright text-muted">Copyright &copy; Outfit Generator</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+	       
+
+	<!--====== Javascripts & Jquery ======-->
+	<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'js/viewclothes.js' %}"></script>
+
+	</body>
+</html>
+
+
+
