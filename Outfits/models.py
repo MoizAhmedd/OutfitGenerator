@@ -9,7 +9,6 @@ import os
 # Create your models here.
 class ClothingItem(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    #user = request.user
     category = models.CharField(max_length = 20)
     name = models.CharField(max_length = 20)
     image = models.ImageField(default = 'default.jpg',upload_to='clothes_pics')
