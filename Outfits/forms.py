@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
+from .models import ClothingItem
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=40,required= True,help_text=None)
@@ -14,3 +15,8 @@ class SignUpForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150)
     password = forms.CharField()
+
+class ClothingItemForm(forms.ModelForm):    
+    class Meta:
+        model = ClothingItem
+        fields = ('user','category','name','image')
