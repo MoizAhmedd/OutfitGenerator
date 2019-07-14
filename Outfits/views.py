@@ -25,25 +25,6 @@ class HomePageView(TemplateView):
             'hey':2
         })
 
-"""
-#Possible get similar products
-outfits = {}
-styleOne = request.POST.get('StyleOne')
-styleTwo = request.POST.get('StyleTwo')
-styleThree = request.POST.get('StyleThree')
-if styleOne:
-    for count, outfit in styleOne.objects.filter():
-        outfits[count] = []
-        for item in outfit.items.all(): #Get all clothing items in this outfit
-            outfits[count].append()
-            #This should be a clothing item
-                #Get the product name
-                #Find the id
-                #Go through the objects in users outfits
-                #If user object id matches product id
-                #Add to outfits[count]
-return [outfits[random.choice(len(outfits))],len(clothes.values())]
-"""
 def generate_gcp_outfit(user,style):
     print(style)
     if style == 0:
@@ -92,21 +73,6 @@ def insufficient_check(user):
         if item.user == user:
             num_items += 1
     return num_items < 2
-
-
-def generate_outfit(user):
-    clothes = {}
-    outfit = []
-    for item in ClothingItem.objects.filter():
-        if item.category not in clothes:
-            if item.user == user:
-                clothes[item.category] = [item]
-        else:
-            if item.user == user:
-                clothes[item.category].append(item)
-    for cat in clothes:
-        outfit.append(random.choice(clothes[cat]))
-    return [outfit,len(clothes.values())]
 
 
 def DashboardView(request,style):
@@ -178,46 +144,7 @@ def DashboardView(request,style):
     #Fix this so bad outfits aren't generated
     return render(request,'dashboard.html',{'myclothes':outfit[0],'insufficient':insufficient,'styleChosen':styleChosen,'style':style})
 
-class DashboardAPIView(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = 'result.html'
-    #parser_classes = []
-    def get(self,request):
 
-        """
-        Return a dictionary of an outfit, and if enough clothes
-        """
-        user = request.user
-        
-        clothes = {}
-        outfit = []
-        clothing_items = []
-        for item in ClothingItem.objects.filter():
-            clothing_items.append(item)
-        for item in clothing_items:
-            if item.category not in clothes:
-                if item.user == user:
-                    #print(model_to_dict(item))
-                    clothes[item.category] = [item]
-            else:
-                if item.user == user:
-                    clothes[item.category].append(item)
-        #print(clothes)
-        for cat in clothes:
-            item = random.choice(clothes[cat])
-            outfit.append(item)
-        #pot_outfit = serializers.serialize("json", outfit)
-        #print(outfit,pot_outfit)
-        #print(type(outfit[0]))
-        insufficient = len(clothes.values()) < 2
-        #print(model_to_dict(outfit[0]))
-        #Response class not working because outfit elements are not JSON serializable
-        #return HttpResponse({'myclothes':outfit,'insufficient':insufficient})
-
-        #Is it possible to render a template, and to have data in json?
-        
-        print('requested',outfit) 
-        return Response({'myclothes':outfit,'insufficient':insufficient})
 
 class NewItemView(CreateView):
 
@@ -226,17 +153,6 @@ class NewItemView(CreateView):
     #fields = ['category','name','image']
     fields = '__all__'
 
-#Changed from class view
-def NewNotItemView(request):
-    if request.method == 'POST':
-        c_form = ClothingItemForm(request.POST,initial = {'user':request.user})
-        if c_form.is_valid():
-            c_form.save()
-            return redirect('dashboard')
-    else:
-        c_form = ClothingItemForm(initial = {'user':request.user,'image': 'default.jpg'})
-        print(c_form)
-    return render(request,'newitem.html',{'form':c_form})
 
 class MyClothesView(ListView):
     model = ClothingItem
