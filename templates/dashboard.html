@@ -50,8 +50,7 @@
           </div>
           <div class="col-lg-6 order-lg-1">
             <div class="p-5">
-                <a href="{% url 'newitem' %}"><h2 class="display-4">Add Clothes</h2></a>
-              
+              <center><a class = "btn btn-outline-primary" href="{% url 'newitem' %}"><h2 class="linkBtns">Add Clothes</h2></a></center>
               <p>Add all your current clothing items, and we'll use them to create amazing outfits!</p>
             </div>
           </div>
@@ -70,7 +69,7 @@
           </div>
           <div class="col-lg-6">
             <div class="p-5">
-                <a  id = "choiceBtn" href="#"><h2 class="display-4">Choose a style preference.</h2></a>
+              <center><a class = "btn btn-outline-primary" id = "choiceBtn" href="#"><h2 class="linkBtns">Choose a style preference.</h2></a></center>
               <p>What do you want to look like? We'll use your clothing items to generate outfits similar to your style preferences.</p>
             </div>
           </div>
@@ -91,7 +90,7 @@
             </div>
             <div class="col-lg-6">
               <div class="p-5">
-                  <a  id = "choiceBtn" href="#"><h2 class="display-4">Change Style</h2></a>
+                <center><a class = "btn btn-outline-primary" id = "choiceBtn" href="#"><h2 class="linkBtns">Change Style</h2></a></center>
                 <p>What do you want to look like? We'll use your clothing items to generate outfits similar to your style preferences.</p>
               </div>
             </div>
@@ -110,7 +109,7 @@
             </div>
             <div class="col-lg-6 order-lg-1">
               <div class="p-5">
-                  <a id = "myBtn" href="#"><h2 class="display-4">Generate Outfit</h2></a>
+                <center><a class = "btn btn-outline-primary" id = "myBtn" href="#"><h2 class="linkBtns">Generate Outfit</h2></a></center>
                 <p>We will pick your next oufit, to prevent you from having to think about it, while still looking great!</p>
               </div>
             </div>
@@ -128,7 +127,7 @@
             </div>
             <div class="col-lg-6">
               <div class="p-5">
-                  <a href="{% url 'myclothes' %}"><h2 class="display-4">View my clothes</h2></a>
+                  <center><a class = "btn btn-outline-primary" href="{% url 'myclothes' %}"><h2 class="linkBtns">View my clothes</h2></a></center>
                 <p>Have a look to see if you've added all your clothes.</p>
               </div>
             </div>
@@ -203,12 +202,20 @@
         <div class="clearfix">
           <form id = "choiceForm" action = "" method = "POST">
             {% csrf_token %}
-            <img src = "{% static 'img/alexcosta.jpg' %}" height = "300" width = "300">
-             <a class="btn btn-primary" id = "Style1" href="{% url 'dashboard' 1%}">Alex Costa Outfits</a>
-            <img src = "{% static 'img/alpham.jpg' %}" height = "300" width = "300">
-            <a class="btn btn-primary" id = "Style2" href="{% url 'dashboard' 2%}">Alpha M Outfits</a>
-            <img src = "{% static 'img/TMF.jpg' %}" height = "300" width = "300" >
-            <a class="btn btn-primary" id = "Style3" href="{% url 'dashboard' 3%}">Jose Zuniga Outfits</a>
+            <div class="row">
+              <div class="column">
+                <center><img src="{% static 'img/alexcosta.jpg' %}" alt="" style="width:90%; height: 300px"></center>
+                <center><a class="btn btn-primary" id = "Style1" href="{% url 'dashboard' 1%}">Alex Costa Outfits</a></center>
+              </div>
+              <div class="column">
+                <center><img src="{% static 'img/alpham.jpg' %}" alt="Forest" style="width:90%; height: 300px"></center>
+                <center><a class="btn btn-primary" id = "Style2" href="{% url 'dashboard' 2%}">Alpha M Outfits</a></center>
+              </div>
+              <div class="column">
+                <center><img src="{% static 'img/TMF.jpg' %}" alt="Mountains" style="width:90%; height: 300px"></center>
+                <center><a class="btn btn-primary" id = "Style3" href="{% url 'dashboard' 3%}">Jose Zuniga Outfits</a></center>
+              </div>
+            </div>
           </form>
         </div>
       </div>

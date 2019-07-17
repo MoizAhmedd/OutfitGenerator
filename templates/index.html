@@ -36,7 +36,7 @@
           <h1 class="mx-auto my-0 text-uppercase" >Outfit Generator</h1>
           <h2 style = "color:white !important;" class="text-white-50 mx-auto mt-2 mb-5">Making picking outfits easy.</h2>
           {% if request.user.is_authenticated %}
-          <a href="{% url 'dashboard' %}" class="btn btn-primary js-scroll-trigger">View Dashboard</a>
+          <a href="{% url 'dashboard' 0%}" class="btn btn-primary js-scroll-trigger">View Dashboard</a>
           <a href="{% url 'logout' %}" class="btn btn-primary js-scroll-trigger">Logout</a>
           {% else %} 
           <a href="{% url 'login'%}" class="btn btn-primary js-scroll-trigger">Login</a>
