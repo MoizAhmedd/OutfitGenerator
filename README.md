@@ -14,6 +14,7 @@ Generates outfits based on your wardrobe, and style preferences.
 
 
 # Screenshots
+<img src = "ScreenShots/Capture.jpg" style = "text-align:left">
 
 # Try it yourself
 - The Web application is currently local, will be deployed soon.
