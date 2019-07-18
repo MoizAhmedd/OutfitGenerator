@@ -19,9 +19,11 @@ Generates outfits based on your wardrobe, and style preferences.
 
 
 # Screenshots
-<div class = "images">
-<img src = "ScreenShots/Capture.JPG" style = "text-align:left; width: 33%; height:auto">
-</div>
+<p align="center">
+  </br>
+  <h5> Choosing Style Preferences </h5>
+  <img src="ScreenShots/chooseStylePref.JPG"/>
+</p>
 
 # Try it yourself
 - The Web application is currently local, will be deployed soon.
