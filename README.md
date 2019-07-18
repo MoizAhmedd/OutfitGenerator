@@ -15,7 +15,7 @@ Generates outfits based on your wardrobe, and style preferences.
 
 # Screenshots
 <div class = "images">
-<img src = "ScreenShots/Capture.JPG" style = "text-align:left; width = 33%; height = auto">
+<img src = "ScreenShots/Capture.JPG" style = "text-align:left; width: 33%; height:auto">
 </div>
 
 # Try it yourself
