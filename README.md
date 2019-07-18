@@ -1,7 +1,8 @@
 <p align="center">
   </br>
-  <img src="ScreenShots/head.jpg"/>
+  <img src="ScreenShots/Head.JPG"/>
 </p>
+
 # OutfitGenerator
 Generates outfits based on your wardrobe, and style preferences.
 
