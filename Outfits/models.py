@@ -17,7 +17,7 @@ class ClothingItem(models.Model):
         return "{}'s {}".format(self.user.username,self.name)
     
     def get_absolute_url(self):
-        return reverse('dashboard',kwargs = {style:0})
+        return reverse('dashboard',args=[0])
     
     def save(self):
         super().save()
